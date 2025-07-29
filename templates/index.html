@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medicinal Plant Identifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Medicinal Plant Identifier</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" name="file" id="file-input" required />
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="result" style="display: none;">
+        <h2 id="prediction-result">Predicting...</h2>
+        <p id="confidence" style="font-weight: bold; margin-top: 10px;"></p>
+        <img id="predicted-image" src="" alt="Predicted Plant" style="display: none; width: 300px; height: auto; border-radius: 10px; margin-top: 10px;" />
+        <div id="plant-info" style="display: none; text-align: left; margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px;">
+            <h3>Medicinal Properties:</h3>
+            <p id="medicinal-properties"></p>
+            <h3>Sustainability Practices:</h3>
+            <p id="sustainability"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').onsubmit = async (event) => {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('file-input');
+            const predictionResult = document.getElementById('prediction-result');
+            const predictedImage = document.getElementById('predicted-image');
+            const resultContainer = document.getElementById('result');
+            const plantInfo = document.getElementById('plant-info');
+            const medicinalProperties = document.getElementById('medicinal-properties');
+            const sustainability = document.getElementById('sustainability');
+
+            if (!fileInput.files.length) {
+                alert("Please select a file!");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            // Show "Predicting..." and hide image and info
+            predictionResult.innerText = 'Predicting...';
+            predictedImage.style.display = 'none';
+            plantInfo.style.display = 'none';
+            resultContainer.style.display = 'block';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // After prediction, show all information
+                    predictionResult.innerText = data.result;
+                    predictedImage.src = data.image_url;
+                    predictedImage.style.display = 'block';
+                     document.getElementById('confidence').innerText = `Confidence: ${data.confidence}`;
+                    medicinalProperties.innerText = data.medicinal_properties;
+                    sustainability.innerText = data.sustainability;
+                    plantInfo.style.display = 'block';
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Failed to predict: ' + error.message);
+            }
+        };
+    </script>
+</body>
+</html>

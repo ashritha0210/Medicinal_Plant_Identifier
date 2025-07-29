@@ -1,0 +1,121 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Remove height: 100vh and replace with: */
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    /* Add this to prevent horizontal scrolling */
+    overflow-x: hidden;
+}
+
+/* Header styling - add sticky positioning */
+h1 {
+    color: #4CAF50;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    /* Add these lines to make header sticky */
+    position: sticky;
+    top: 0;
+    background-color: #f4f4f9;
+    padding: 10px 0;
+    width: 100%;
+    z-index: 100;
+}
+
+/* Keep all other CSS exactly the same as before */
+form {
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+input[type="file"] {
+    padding: 12px;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: box-shadow 0.3s ease;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1),
+                inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+    outline: none;
+}
+
+input[type="file"]:hover {
+    box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+                inset -2px -2px 8px rgba(255, 255, 255, 0.9);
+}
+
+button {
+    padding: 12px 24px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1),
+                inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+                inset -2px -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+#result {
+    margin-top: 20px;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+#predicted-image {
+    max-width: 300px;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    margin-top: 10px;
+    object-fit: contain;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+#predicted-label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-top: 10px;
+}
+
+#loading {
+    font-size: 18px;
+    color: #999;
+    margin-top: 10px;
+    font-style: italic;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Medicinal Plant Identifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Create Your Account</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="{{ url_for('signup') }}" id="signup-form">
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <div class="password-strength hidden" id="password-strength"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            </div>
+            
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+        
+        <div class="auth-footer">
+            Already have an account? <a href="{{ url_for('login') }}" class="auth-link">Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthIndicator = document.getElementById('password-strength');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            strengthIndicator.classList.remove('hidden');
+            
+            // Reset classes
+            strengthIndicator.classList.remove('weak', 'medium', 'strong');
+            
+            if (password.length === 0) {
+                strengthIndicator.classList.add('hidden');
+                return;
+            }
+            
+            // Calculate strength
+            let strength = 0;
+            
+            // Length check
+            if (password.length > 7) strength += 1;
+            if (password.length > 11) strength += 1;
+            
+            // Character variety
+            if (/[A-Z]/.test(password)) strength += 1; // Uppercase
+            if (/[0-9]/.test(password)) strength += 1;  // Numbers
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1; // Special chars
+            
+            // Apply appropriate class
+            if (strength < 3) {
+                strengthIndicator.classList.add('weak');
+            } else if (strength < 5) {
+                strengthIndicator.classList.add('medium');
+            } else {
+                strengthIndicator.classList.add('strong');
+            }
+        });
+    </script>
+</body>
+</html>
